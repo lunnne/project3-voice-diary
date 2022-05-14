@@ -1,0 +1,33 @@
+#fc-dom-2 {
+    font-size: 2.5rem;
+  }
+  
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 2rem;
+  }
+  
+  .fc .fc-header-toolbar button {
+    /* background: none; */
+    background-color: #f2f1ed;
+    border-style: none;
+    color:#343433 ;
+    font-weight: 700;
+  }
+  
+  .fc .fc-header-toolbar button:hover {
+    /* border-style: none; */
+    background-color: #f2f1ed;
+    transform: translateX();
+    transform: translateY();
+    color: #c07777;
+    
+  }
+
+  .main-calendar {
+    padding: 1rem 5rem;
+  }
+
+ .MuiTouchRipple-root {
+     background: none;
+     
+  }

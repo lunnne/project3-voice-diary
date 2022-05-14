@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@200;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,400;1,200;1,400&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: 'Karla', sans-serif;
+  color: #343433;
+
+}
+
+body { 
+  background-color: #f2f1ed;
+  color: #343433;
+}
+
+.home {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#main-text {
+  font-size: 3rem;
+  font-weight: 700;
+  transform: translateY(-3rem);
+  margin-bottom: 5rem;
+}
+
+.hug {
+  width: 4.5em;
+  height: 4.5em;
+  margin-bottom: 3rem;
+}
+
+#main-btn {
+    width: 20%;
+    font-size: 1.2rem;
+    padding: 0.8rem;
+    border-radius: 99em;
+    background-color: #343433;
+    color: #f2f1ed;
+}
+
+
