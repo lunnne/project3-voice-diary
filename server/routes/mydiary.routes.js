@@ -3,8 +3,9 @@ const router = express.Router();
 const multer = require('multer');
 const { Readable } = require('stream');
 const { ObjectId } = require('mongodb')
-
-const fs = require('fs') 
+const moment = require('moment')
+const fs = require('fs'); 
+const { log } = require('console');
 
 router.post('/mydiary/create', async(req,res, next) => {
     const storage = multer.memoryStorage()
@@ -19,12 +20,11 @@ router.post('/mydiary/create', async(req,res, next) => {
 
         console.log(req.body);
         console.log(req.file)
-        console.log(req.app.locals);
 
         const readStream = Readable.from(req.file.buffer);
         // const readStream = fs.createReadStream(req.body.name)
 
-        const options = ({ filename: req.body.name, contenttype: 'audio/wav'});
+        const options = ({ title: req.body.title, date: req.body.date, filename: req.body.name, contenttype: 'audio/wav'});
         req.app.locals.Attachment.write(options, readStream, (err, file) => {
             if (err)
                 return res.status(400).json({message: "Bad Request"});
@@ -33,11 +33,26 @@ router.post('/mydiary/create', async(req,res, next) => {
                 return res.status(200).json({
                     message: "Successfully Saved!",
                     file: file,
+                    options: options,
             });
-            }
+            } 
         })
     });
 })
+
+router.get('/mydiary/recordings', async (req,res, next) => {
+
+    // res.set('content-type', 'audio/wav');
+    // res.set('accept-ranges', 'bytes');
+    
+ req.app.locals.Attachment.find()
+ .then((allRecordings) => res.json(allRecordings))
+ .catch((err)=> console.log(err))
+})
+
+
+
+
 
 router.get('/mydiary/:id', async (req,res, next) => {
     if(!req.params.id) {
