@@ -35,6 +35,8 @@ const index = require("./routes/index.routes");
 app.use("/api", index);
 const myDiaryRoute = require("./routes/mydiary.routes");
 app.use("/api", myDiaryRoute);
+const authRoute = require("./routes/auth.routes");
+app.use("/api/auth", authRoute);
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

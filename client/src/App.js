@@ -3,7 +3,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/nav/Navbar';
 import Calendar from './components/calendar/Calendar';
-import AddRecording from './components/Recording/AddRecording';
+import AddRecording from './components/recording/AddRecording';
 import Home from './components/Home';
 
 
