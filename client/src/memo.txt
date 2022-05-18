@@ -1,4 +1,2 @@
 #dadad6
 #c07777
-
-onRecordAdded= {record => onRecordAdded(record)
