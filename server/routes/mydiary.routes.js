@@ -4,8 +4,6 @@ const multer = require('multer');
 const { Readable } = require('stream');
 const { ObjectId } = require('mongodb')
 const moment = require('moment')
-const fs = require('fs'); 
-const { log } = require('console');
 
 router.post('/mydiary/create', async(req,res, next) => {
     const storage = multer.memoryStorage()
@@ -17,9 +15,8 @@ router.post('/mydiary/create', async(req,res, next) => {
         } else if(!req.body.name) {
             return res.status(400).json({ message: "No track name in request body" });
         }
-
-        console.log(req.body);
-        console.log(req.file)
+        
+        console.log('this is',req.file);
 
         const readStream = Readable.from(req.file.buffer);
         // const readStream = fs.createReadStream(req.body.name)
@@ -35,7 +32,7 @@ router.post('/mydiary/create', async(req,res, next) => {
                     file: file,
                     options: options,
             });
-            } 
+        } 
         })
     });
 })
@@ -49,9 +46,6 @@ router.get('/mydiary/recordings', async (req,res, next) => {
  .then((allRecordings) => res.json(allRecordings))
  .catch((err)=> console.log(err))
 })
-
-
-
 
 
 router.get('/mydiary/:id', async (req,res, next) => {

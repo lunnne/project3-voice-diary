@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import listPlugin from '@fullcalendar/list';
@@ -9,59 +8,113 @@ import AddRecording from '../recording/AddRecording';
 import styled from 'styled-components';
 import './Calendar.css';
 import axios from 'axios';
+import ShowRecording from '../recording/ShowRecording';
 
 const Calendar = (props) => {
-
   const [modalOpen, setModalOpen] = useState(false);
+  const [eventModalOpen, setEventmodalOpen] = useState(false);
   const [listOfRecordings, setListOfRecordings] = useState([]);
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [uploadDate, setUploadDate] = useState('');
+  const [uploadTime, setUploadTime] = useState('');
+  const [id, setId] = useState('')
+  const [url, setUrl]=useState('')
+  let calendar_list = [];
 
-useEffect(() => {
-    axios.get('http://localhost:5005/api/mydiary/recordings')
-        .then(response => {
-            const recordings = response.data;
-            // setListOfProjects(projects);
-            console.log(recordings)
-        })
-        .catch(err => {
-            console.log(err)
-        });
-}, []);
+  const openModal = (id) => {
+    let daily_record = calendar_list.filter((record) => {
+      if (record.id == id) {
+        return record;
+      }
+    });
 
+    let uploadDate = daily_record[0].upload_date.split('T')[0];
+    let uploadTime = daily_record[0].upload_date.split('T')[1];
+    let uploadHour = uploadTime.split(':')[0];
+    let uploadMinute = uploadTime.split(':')[1];
 
-  // const calendarRef = useRef(null);
+      axios({
+        url: `http://localhost:5005/api/mydiary/${id}`, //your url
+        method: 'GET',
+        responseType: 'blob', // important
+    }).then((response) => {
+        let url = window.URL.createObjectURL(new Blob([response.data]));
+        setUrl(url)
+    }).catch(err=>console.log(err))  
 
-  // const onRecordAdded = (event) => {
-  //   let calendarApi = calendarRef.current.getApi();
-  //   calendarApi.addEvent(event);
-  // };
+    // let day = "AM"
+    // if (hour >= 12){
+    //   day = "PM"
+    // }
+    // if(hour > 12){
+    //   hour = (hour-12)
+    // }
+    setTitle(daily_record[0].title);
+    setDate(daily_record[0].date);
+    setUploadDate(uploadDate);
+    setUploadTime(uploadHour + ':' + uploadMinute);
+    setId(id)
+    // setDay(day)
+    setEventmodalOpen(true);
+  };
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:5005/api/mydiary/recordings')
+      .then((response) => {
+        const recordings = response.data;
+        setListOfRecordings(recordings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
-
+  calendar_list = listOfRecordings.map((data) => {
+    let title = data.filename.split('|')[0];
+    let date = data.filename.split('|')[1];
+    let id = data._id;
+    let upload_date = data.uploadDate;
+    return { title, date, id, upload_date };
+  });
 
   return (
     <section className="main-calendar">
-      <div className="full-calendar" style={{ position: 'relative', zIndex: -1 }}>
+      <div className="full-calendar">
         <FullCalendar
+          plugins={[dayGridPlugin, listPlugin]}
           headerToolbar={{
             start: 'today ,prev',
             center: 'title',
             end: 'next, listWeek',
           }}
-          events={[
-            { title: 'event 1', date: '2022-05-01' },
-            { title: 'event 2', date: '2022-05-03' }
-          ]}
-          plugins={[dayGridPlugin, listPlugin]}
           initialView="dayGridMonth"
+          events={calendar_list}
+          eventClick={(info) => {
+            openModal(info.event.id);
+          }}
         />
       </div>
-        <AddBtn>
-          <Fab aria-label="add" variant="extended" onClick={()=> {setModalOpen(true)}}>
-            <AddIcon />
-            <Word>Add Recording</Word>
-          </Fab>
-        </AddBtn>
-        <AddRecording isOpen={modalOpen} onClose={()=> {setModalOpen(false)}} />
+      <AddBtn>
+        <Fab
+          aria-label="add"
+          variant="extended"
+          onClick={() => {
+            setModalOpen(true);
+          }}
+        >
+          <AddIcon />
+          <Word>Add Recording</Word>
+        </Fab>
+      </AddBtn>
+      <AddRecording
+        isOpen={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+      />
+      <ShowRecording title={title} date={date} uploadDate={uploadDate} uploadTime={uploadTime} id={id} url={url} isOpen={eventModalOpen} onClose={() => setEventmodalOpen(false)} />
     </section>
   );
 };
