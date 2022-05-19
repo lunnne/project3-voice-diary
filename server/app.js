@@ -16,7 +16,7 @@ mongoose
   .connect(MONGO_URI)
   .then((x) => {
     console.log(
-      `Connected to Mongo! Database name: "${x.connections[0].name}"`
+      `Connected to Mongo Database name: "${x.connections[0].name}"`
     );
     Attachment = createModel();
     app.locals.Attachment = Attachment
