@@ -8,7 +8,7 @@ const User = require('../models/User.model');
 const isAuth = require('../middleware/auth.js');
 const config = require('../config/config');
 
-const saltRounds = 12
+const saltRounds = 12;
 
 const validateCredential = [
   body('username').trim().notEmpty().withMessage('username should be at least 5 characters'),
@@ -37,14 +37,18 @@ router.post('/signup', validateSignup, async (req, res, next) => {
   }
 
   const hashed = await bcrypt.hash(password, saltRounds);
-  const userId = await User.create({
+  const user = await User.create({
     username,
     email,
     password: hashed,
   });
 
-  const token = createJwtToken(userId);
-  res.status(201).json({ token, username });
+  if (user) {
+    res.status(201).json({ _id: user.id, username: user.username, email: user.email, token: generateJwtToken(user._id) });
+  } else {
+    res.status(400);
+    throw new Error('Invalid user data');
+  }
 });
 
 router.post('/login', validateCredential, async (req, res, next) => {
@@ -59,20 +63,19 @@ router.post('/login', validateCredential, async (req, res, next) => {
   if (!isValidPassword) {
     return res.status(401).json({ message: 'Invalid user or password' });
   }
-  const token = createJwtToken(user.Id);
-  res.status(201).json({ token, username });
+
+  res.status(201).json({ _id: user.id, username: user.username, email: user.email, token: generateJwtToken(user._id) });
 });
 
 router.get('/me', isAuth, async (req, res, next) => {
-  const user = await User.findById(req.userId);
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-  res.status(200).json({ token: req.token, username: user.username });
+  const {_id, username, email} = await User.findById(req.user.id)
+
+  res.status(200).json({ id:_id, username, email});
 });
 
-function createJwtToken(id) {
-  return jwt.sign({ id }, config.jwt.secretKey, { expiresIn: config.jwt.expiresInSec });
+// put id in payload
+function generateJwtToken(id) {
+  return jwt.sign({ id }, config.jwt.secretKey, { expiresIn: '30d' });
 }
 
 module.exports = router;
