@@ -19,7 +19,7 @@ export const SidebarData = [
     },
     {
         title: 'Our Diary',
-        path:'/ourdiary',
+        path:'/',
         icon: <IoIcons.IoMdPeople/>,
         cName : 'nav-text'
     },
