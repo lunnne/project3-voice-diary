@@ -11,6 +11,7 @@ let Attachment;
 const app = express();
 
 const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost/server";
+console.log(MONGO_URI);
 
 mongoose
   .connect(MONGO_URI)

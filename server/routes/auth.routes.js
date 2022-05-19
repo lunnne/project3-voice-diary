@@ -22,7 +22,7 @@ router.post('/signup', validateSignup, async (req, res, next) => {
   const { username, password, email } = req.body;
 
   if (!username || !password || !email) {
-    res.status(400).json({ message: 'Please fill in all fields' });
+    res.status(400).json({ message: 'Please fill in all Fields' });
     return;
   }
 
