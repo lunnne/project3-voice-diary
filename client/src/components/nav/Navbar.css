@@ -1,5 +1,5 @@
 .navbar {
-    background-color: #f2f1ed;
+    background: #f2f1ed;
     color: #343433;
     height: 80px;
     display: flex;
@@ -10,7 +10,7 @@
   .menu-bars {
     margin-left: 2rem;
     font-size: 2rem;
-    background: none;
+    /* background: none; */
   }
   
   .nav-menu {

@@ -8,7 +8,7 @@ import 'react-datetime/css/react-datetime.css';
 import * as AiIcons from 'react-icons/ai';
 import './Recording.css';
 
-const AddRecording = ({ isOpen, onClose }) => {
+const AddRecording = ({ isOpen, onClose, setlistOfRecordings, listOfRecordings }) => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(moment());
 
@@ -17,11 +17,12 @@ const AddRecording = ({ isOpen, onClose }) => {
     type: 'audio/wav',
   });
 
+  console.log(status);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     onClose();
-    
 
     const audioBlob = await fetch(mediaBlobUrl).then((res) => res.blob());
 
@@ -34,8 +35,6 @@ const AddRecording = ({ isOpen, onClose }) => {
 
     formData.append('file', audioFile);
     formData.append('name', filename);
-    formData.append('title', title);
-    formData.append('date', date);
 
     axios({
       method: 'post',
@@ -43,12 +42,17 @@ const AddRecording = ({ isOpen, onClose }) => {
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data' },
     })
-      .then((response) => console.log(response))
+      .then((response) => setlistOfRecordings([...listOfRecordings, response.data]))
       .catch((err) => console.log(err));
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose} ariaHideApp={false} style={{ overlay: { zIndex: 20 } , content : { background : '#f2f1ed', padding : '50px'} }}>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      ariaHideApp={false}
+      style={{ overlay: { zIndex: 20 }, content: { background: '#f2f1ed', padding: '50px' } }}
+    >
       <form encType="multipart/form-data" onSubmit={handleSubmit}>
         <div className="main-content">
           <Datetime
@@ -61,15 +65,25 @@ const AddRecording = ({ isOpen, onClose }) => {
           <section className="question-container">
             <h1>"What flower do you like most?"</h1>
           </section>
-          <div className="status-btn">
-            <AiIcons.AiFillAudio />
-          </div>
 
-          <div className="audio-container">
-            <audio src={mediaBlobUrl} controls />
-          </div>
+          
+            <div className="status-btn">
+              <AiIcons.AiFillAudio />
+            </div>
 
-          <input type="text" name="title" className="title-input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+          { status == 'stopped' &&
+            <div className="audio-container">
+              <audio src={mediaBlobUrl} controls />
+            </div>
+          }
+          <input
+            type="text"
+            name="title"
+            className="title-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+          />
 
           <div className="btn-container">
             <button className="start-btn" type="button" onClick={startRecording}>

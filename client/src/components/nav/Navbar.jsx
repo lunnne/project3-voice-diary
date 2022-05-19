@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { SidebarData } from './SidebarData';
-import './Navbar.css';
 import { IconContext } from 'react-icons/lib';
+import { SidebarData } from './SidebarData';
+import Avatar from '../Avatar';
+import './Navbar.css';
 
 const Navbar = (props) => {
   const { currentUser, logOut } = props;
@@ -16,36 +17,32 @@ const Navbar = (props) => {
     <>
       <IconContext.Provider value={{ color: 'red' }}>
         <div className="navbar">
-          <Link to="#" className="menu-bars">
+          <div className="menu-bars">
             <FaIcons.FaBars onClick={showSidebar} />
-          </Link>
+          </div>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'} style={{ zIndex: '30' }}>
           <ul className="nav-menu-items" onClick={showSidebar}>
             <li className="navbar-toggle">
               <Link to="#" className="menu-bars">
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
-            {currentUser && <li className="logo-user">@{currentUser.username}</li>}
+
+            {currentUser && <Avatar name={currentUser.username} />}
 
             {currentUser ? (
-              <a href="/" className="nav-link" onClick={logOut}>
+              <a href="/" className="nav-text link" onClick={logOut}>
                 Logout
               </a>
             ) : (
               <div>
-                <li>
-                  {' '}
-                  <Link to={'/auth/login'} className="nav-link">
-                    Login
-                  </Link>
+                <li className="nav-link">
+                  <Link to={'/auth/login'}>Login</Link>
                 </li>
 
-                <li className="nav-item">
-                  <Link to={'/auth/signup'} className="nav-link">
-                    Sign up
-                  </Link>
+                <li className="nav-link">
+                  <Link to={'/auth/signup'}>Sign Up</Link>
                 </li>
               </div>
             )}

@@ -19,13 +19,10 @@ const Calendar = (props) => {
   const [date, setDate] = useState('');
   const [uploadDate, setUploadDate] = useState('');
   const [uploadTime, setUploadTime] = useState('');
-  const [id, setId] = useState('')
-  const [url, setUrl]=useState('')
+  const [id, setId] = useState('');
+  const [url, setUrl] = useState('');
   const navigate = useNavigate();
   let calendar_list = [];
-
-
-
 
   const openModal = (id) => {
     let daily_record = calendar_list.filter((record) => {
@@ -40,13 +37,15 @@ const Calendar = (props) => {
     let uploadMinute = uploadTime.split(':')[1];
 
     axios({
-        url: `http://localhost:5005/api/mydiary/${id}`, //your url
-        method: 'GET',
-        responseType: 'blob', // important
-    }).then((response) => {
+      url: `http://localhost:5005/api/mydiary/${id}`, //your url
+      method: 'GET',
+      responseType: 'blob', // important
+    })
+      .then((response) => {
         let url = window.URL.createObjectURL(new Blob([response.data]));
-        setUrl(url)
-    }).catch(err=>console.log(err))  
+        setUrl(url);
+      })
+      .catch((err) => console.log(err));
 
     // let day = "AM"
     // if (hour >= 12){
@@ -59,14 +58,12 @@ const Calendar = (props) => {
     setDate(daily_record[0].date);
     setUploadDate(uploadDate);
     setUploadTime(uploadHour + ':' + uploadMinute);
-    setId(id)
+    setId(id);
     // setDay(day)
     setEventmodalOpen(true);
   };
 
- 
-
-  useEffect(() => {  
+  useEffect(() => {
     axios
       .get('http://localhost:5005/api/mydiary')
       .then((response) => {
@@ -78,11 +75,11 @@ const Calendar = (props) => {
       });
   }, []);
 
+  const deleteEvent = (updatedEvent) => {
+    setListOfRecordings(updatedEvent);
+  };
 
-   const deleteEvent = (updatedEvent) => {
-    setListOfRecordings(updatedEvent)
-  }
-
+  console.log(listOfRecordings);
 
   calendar_list = listOfRecordings.map((data) => {
     let title = data.filename.split('|')[0];
@@ -91,8 +88,6 @@ const Calendar = (props) => {
     let upload_date = data.uploadDate;
     return { title, date, id, upload_date };
   });
-
-
 
   return (
     <section className="main-calendar">
@@ -106,7 +101,7 @@ const Calendar = (props) => {
           }}
           initialView="dayGridMonth"
           events={calendar_list}
-          eventColor= '#E1C0FF'
+          eventColor="#E1C0FF"
           eventClick={(info) => {
             openModal(info.event.id);
           }}
@@ -126,11 +121,23 @@ const Calendar = (props) => {
       </AddBtn>
       <AddRecording
         isOpen={modalOpen}
+        listOfRecordings={listOfRecordings}
+        setlistOfRecordings={setListOfRecordings}
         onClose={() => {
           setModalOpen(false);
         }}
       />
-      <ShowRecording title={title} date={date} uploadDate={uploadDate} uploadTime={uploadTime} id={id} url={url} isOpen={eventModalOpen} deleteEvent={deleteEvent} onClose={() => setEventmodalOpen(false)} />
+      <ShowRecording
+        title={title}
+        date={date}
+        uploadDate={uploadDate}
+        uploadTime={uploadTime}
+        id={id}
+        url={url}
+        isOpen={eventModalOpen}
+        deleteEvent={deleteEvent}
+        onClose={() => setEventmodalOpen(false)}
+      />
     </section>
   );
 };

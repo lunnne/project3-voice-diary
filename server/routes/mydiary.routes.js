@@ -22,17 +22,17 @@ router.post('/mydiary/create', async(req,res, next) => {
         const readStream = Readable.from(req.file.buffer);
         // const readStream = fs.createReadStream(req.body.name)
 
-        const options = ({ title: req.body.title, date: req.body.date, filename: req.body.name, contenttype: 'audio/wav'});
+        const options = ({filename: req.body.name, contenttype: 'audio/wav'});
         req.app.locals.Attachment.write(options, readStream, (err, file) => {
             if (err)
                 return res.status(400).json({message: "Bad Request"});
             else {
                 console.log("Posted! \n" + file.toString());
-                return res.status(200).json({
-                    message: "Successfully Saved!",
-                    file: file,
-                    options: options,
-            });
+                return res.status(200).json(
+                    // message: "Successfully Saved!",
+                    file
+                    // options: options,
+            );
         } 
         })
     });
