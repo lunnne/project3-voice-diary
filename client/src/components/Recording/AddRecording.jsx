@@ -1,17 +1,16 @@
 import { useReactMediaRecorder } from 'react-media-recorder';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import moment from 'moment';
+import axios from 'axios';
 import Modal from 'react-modal';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import * as AiIcons from 'react-icons/ai';
 import './Recording.css';
-import axios from 'axios';
-import zIndex from '@material-ui/core/styles/zIndex';
 
-const AddRecording = ({ isOpen, onClose, onRecordAdded }) => {
+const AddRecording = ({ isOpen, onClose }) => {
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(moment());
 
   const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
     audio: true,
@@ -21,12 +20,8 @@ const AddRecording = ({ isOpen, onClose, onRecordAdded }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // onRecordAdded({
-    //   title,
-    //   date,
-    // });
-
     onClose();
+    
 
     const audioBlob = await fetch(mediaBlobUrl).then((res) => res.blob());
 
@@ -53,7 +48,7 @@ const AddRecording = ({ isOpen, onClose, onRecordAdded }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose} ariaHideApp={false} style={{ overlay: { zIndex: 20 } }}>
+    <Modal isOpen={isOpen} onRequestClose={onClose} ariaHideApp={false} style={{ overlay: { zIndex: 20 } , content : { background : '#f2f1ed', padding : '50px'} }}>
       <form encType="multipart/form-data" onSubmit={handleSubmit}>
         <div className="main-content">
           <Datetime

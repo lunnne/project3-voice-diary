@@ -3,7 +3,8 @@ const router = express.Router();
 const multer = require('multer');
 const { Readable } = require('stream');
 const { ObjectId } = require('mongodb')
-const moment = require('moment')
+const isAuth = require('../middleware/auth.js');
+
 
 router.post('/mydiary/create', async(req,res, next) => {
     const storage = multer.memoryStorage()
@@ -37,7 +38,7 @@ router.post('/mydiary/create', async(req,res, next) => {
     });
 })
 
-router.get('/mydiary/recordings', async (req,res, next) => {
+router.get('/mydiary', async (req,res, next) => {
 
     // res.set('content-type', 'audio/wav');
     // res.set('accept-ranges', 'bytes');
@@ -93,7 +94,7 @@ router.delete("/mydiary/:id", (req, res)=> {
         console.log('Deleted\n' + file);
         return res.status(200).json({
             message: "Successfully Deleted",
-            file: file,
+            // file: file,
         });
     });   
 });
