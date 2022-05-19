@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm i && concurrently \"cd client && npm run start\" \"cd server && npm run start\""
+    "start": "concurrently \"cd client && npm run start\" \"cd server && npm run start\""
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/lunnne/project3-voice-diary/issues"
   },
-  "homepage": "https://github.com/lunnne/project3-voice-diary#readme"
+  "homepage": "https://github.com/lunnne/project3-voice-diary#readme",
+  "dependencies": {
+    "concurrently": "^7.2.0"
+  }
 }
