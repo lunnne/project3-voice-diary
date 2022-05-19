@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@200;400;600&display=swap');
+
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  transform: translateY(-10%);
+}
+
+form h2 {
+  color: #343433;
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+
+.err-msg {
+  padding: 10px 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  color: red;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+form .form-group {
+  margin-bottom: 30px;
+}
+
+form label {
+  display: block;
+  color: #343433;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+form input {
+  appearance: none;
+  background: none;
+  outline: none;
+  border-color: #343433;
+}
+
+form input:not([type='submit']) {
+  display: block;
+  width: 100%;
+  padding: 15px 30px;
+  border-radius: 99em;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  transition: 0.4s;
+  color: #222;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+form input:not([type='submit'])::placeholder {
+  color: #ccc;
+}
+
+form input:not([type='submit']):focus,
+form input:not([type='submit']):valid {
+  background-color: #fff;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+form input[type='submit'] {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #4c4260;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  transition: 0.4s;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+form button {
+  appearance: none;
+  background: none;
+  outline: none;
+  border-color: #343433;
+}
+
+form button:not([type='submit']) {
+  display: block;
+  width: 100%;
+  padding: 15px 30px;
+  border-radius: 99em;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  transition: 0.4s;
+  color: #222;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+form button:not([type='submit'])::placeholder {
+  color: #ccc;
+}
+
+form button:not([type='submit']):focus,
+form button:not([type='submit']):valid {
+  background-color: #f2f1ed;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+form button[type='submit'] {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border-radius: 99em;
+  background-color: #c07777;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  transition: 0.4s;
+  color: #f2f1ed;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
