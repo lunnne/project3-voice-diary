@@ -62,24 +62,20 @@ const Calendar = (props) => {
     // setDay(day)
     setEventmodalOpen(true);
   };
-
+  
   useEffect(() => {
     axios
-      .get('http://localhost:5005/api/mydiary')
-      .then((response) => {
-        const recordings = response.data;
-        setListOfRecordings(recordings);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    .get('http://localhost:5005/api/mydiary')
+    .then((response) => {
+      const recordings = response.data;
+      setListOfRecordings(recordings);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }, []);
-
-  const deleteEvent = (updatedEvent) => {
-    setListOfRecordings(updatedEvent);
-  };
-
-  console.log(listOfRecordings);
+  
+  
 
   calendar_list = listOfRecordings.map((data) => {
     let title = data.filename.split('|')[0];
@@ -135,7 +131,8 @@ const Calendar = (props) => {
         id={id}
         url={url}
         isOpen={eventModalOpen}
-        deleteEvent={deleteEvent}
+        listOfRecordings={listOfRecordings}
+        setListOfRecordings={setListOfRecordings}
         onClose={() => setEventmodalOpen(false)}
       />
     </section>

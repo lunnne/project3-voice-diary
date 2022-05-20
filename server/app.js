@@ -7,6 +7,7 @@ const multer = require('multer');
 const { createModel } = require('mongoose-gridfs');
 
 
+
 let Attachment;
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api", index);
 const myDiaryRoute = require("./routes/mydiary.routes");
 app.use("/api", myDiaryRoute);
 const authRoute = require("./routes/auth.routes");
+const { config } = require('dotenv');
 app.use("/api/auth", authRoute);
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);

@@ -23,7 +23,6 @@ function App() {
 
     if (user) {
       setCurrentUser(user);
-      console.log(user);
     } else {
       console.log('no user');
     }

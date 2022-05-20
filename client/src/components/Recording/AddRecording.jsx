@@ -17,8 +17,6 @@ const AddRecording = ({ isOpen, onClose, setlistOfRecordings, listOfRecordings }
     type: 'audio/wav',
   });
 
-  console.log(status);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -30,8 +28,6 @@ const AddRecording = ({ isOpen, onClose, setlistOfRecordings, listOfRecordings }
     const filename = title + '|' + newDate;
     const audioFile = new File([audioBlob], `${filename}.wav`, { type: 'audio/wav' });
     const formData = new FormData(); // preparing to send to the server
-    console.log(audioFile);
-    console.log(title);
 
     formData.append('file', audioFile);
     formData.append('name', filename);

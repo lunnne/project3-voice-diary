@@ -8,15 +8,15 @@ import axios from 'axios';
 
 const ShowRecording = (props) => {
 
-  const {isOpen, onClose, title, date, uploadDate, uploadTime, url, id, deleteEvent} =props
+  const {isOpen, onClose, title, date, uploadDate, uploadTime, url, id, listOfRecordings, setListOfRecordings} =props
 
-  const handleDelete = (id) => {
-    console.log(id);
+  const handleDelete = () => {
     axios
     .delete(`http://localhost:5005/api/mydiary/${id}`)
     .then((response) => {
-       console.log(response.data);
-     
+         const deletedList = listOfRecordings.filter((record) => record._id !== response.data.file._id);
+         setListOfRecordings(deletedList)
+      
     })
     .catch((err) => {
       console.log(err); 
@@ -36,7 +36,7 @@ const ShowRecording = (props) => {
      <p>{uploadTime}</p>
      <p>{id}</p>
      <audio src={url} controls/>
-     <button onClick={()=>handleDelete(id)} className='delete-btn'>Delete</button>
+     <button onClick={handleDelete} className='delete-btn'>Delete</button>
     </Modal>
   )
 }

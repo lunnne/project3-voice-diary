@@ -93,8 +93,7 @@ router.delete("/mydiary/:id", (req, res)=> {
         
         console.log('Deleted\n' + file);
         return res.status(200).json({
-            message: "Successfully Deleted",
-            // file: file,
+            file: file,
         });
     });   
 });

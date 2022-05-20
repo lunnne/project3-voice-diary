@@ -9,7 +9,10 @@ const config = {
   },
   bcrypt: {
     saltRounds: process.env.BCRYPT_SALT_ROUNDS,
-  }
-};
+  },
+}
+
+
+
 
 module.exports = config;
