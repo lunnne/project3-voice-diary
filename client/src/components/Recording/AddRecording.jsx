@@ -1,26 +1,43 @@
 import { useReactMediaRecorder } from 'react-media-recorder';
-import React, { useState } from 'react';
-import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import Modal from 'react-modal';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import * as AiIcons from 'react-icons/ai';
 import './Recording.css';
+import airplain from '../../assets/airplain.png';
+import { diaryService } from '../../services/diary.service';
 
 const AddRecording = ({ isOpen, onClose, setlistOfRecordings, listOfRecordings }) => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(moment());
+  const [quote, setQuote] = useState('');
 
-  const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
+  const { status, startRecording, stopRecording, clearBlobUrl, mediaBlobUrl } = useReactMediaRecorder({
     audio: true,
     type: 'audio/wav',
   });
 
+  const getQuote = () => {
+    diaryService
+      .getQuote()
+      .then((response) => {
+        let randomNum = Math.floor(Math.random() * response.data.length);
+        setQuote(response.data[randomNum]);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    getQuote();
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    onClose();
 
     const audioBlob = await fetch(mediaBlobUrl).then((res) => res.blob());
 
@@ -34,12 +51,16 @@ const AddRecording = ({ isOpen, onClose, setlistOfRecordings, listOfRecordings }
 
     axios({
       method: 'post',
-      url: 'http://localhost:5005/api/mydiary/create',
+      url: `http://localhost:5005/api/mydiary/create`,
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((response) => setlistOfRecordings([...listOfRecordings, response.data]))
       .catch((err) => console.log(err));
+
+    setTitle('');
+    clearBlobUrl();
+    onClose();
   };
 
   return (
@@ -47,54 +68,75 @@ const AddRecording = ({ isOpen, onClose, setlistOfRecordings, listOfRecordings }
       isOpen={isOpen}
       onRequestClose={onClose}
       ariaHideApp={false}
-      style={{ overlay: { zIndex: 20 }, content: { background: '#f2f1ed', padding: '50px' } }}
+      style={{
+        overlay: {
+          position: 'fixed',
+          backgroundColor: '#f2f1ed',
+          zIndex: 20,
+        },
+        content: {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '50%',
+          height: '80%',
+          border: '2px solid #444444',
+          background: '#FAF9F5',
+          borderRadius: '2rem',
+          outline: 'none',
+        },
+      }}
     >
-      <form encType="multipart/form-data" onSubmit={handleSubmit}>
-        <div className="main-content">
-          <Datetime
-            timeFormat={false}
-            name="date"
-            inputProps={{ style: { width: '200px', height: '30px' } }}
-            value={date}
-            onChange={(date) => setDate(date)}
-          />
-          <section className="question-container">
-            <h1>"What flower do you like most?"</h1>
-          </section>
+      <form className="main-container" encType="multipart/form-data" onSubmit={handleSubmit}>
+        <Datetime
+          timeFormat={false}
+          name="date"
+          inputProps={{
+            style: {
+              fontFamily: 'Quantico',
+              fontWeight: 700,
+              fontSize: 30,
+              height: '3rem',
+              background: 'none',
+              border: 'none',
+            },
+          }}
+          value={date}
+          onChange={(date) => setDate(date)}
+        />
+        <section className="question-container form-group">
+          <h1>{quote.text}</h1>
+          <p>-{quote.author}</p>
+        </section>
 
-          
-            <div className="status-btn">
-              <AiIcons.AiFillAudio />
-            </div>
-
-          { status == 'stopped' &&
-            <div className="audio-container">
-              <audio src={mediaBlobUrl} controls />
-            </div>
-          }
-          <input
-            type="text"
-            name="title"
-            className="title-input"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-          />
-
-          <div className="btn-container">
-            <button className="start-btn" type="button" onClick={startRecording}>
-              Start
-            </button>
-            <button className="stop-btn" type="button" onClick={stopRecording}>
-              Stop
-            </button>
+        <div className="form-group">
+          <div className="status-btn">
+            <AiIcons.AiFillAudio />
           </div>
+        </div>
 
-          <button className="submit-btn" type="submit">
-            {' '}
-            submit{' '}
+        {status === 'stopped' && (
+          <div className="audio-container">
+            <audio src={mediaBlobUrl} controls />
+          </div>
+        )}
+        <div className="form-group">
+          <input type="text" name="title" id="title-text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+        </div>
+
+        <div className="btn-container form-group">
+          <button className="start-btn" type="button" style={{ fontSize: '1rem' }} onClick={startRecording}>
+            Start
+          </button>
+          <button className="stop-btn" type="button" style={{ fontSize: '1rem' }} onClick={stopRecording}>
+            Stop
           </button>
         </div>
+
+        <button onClick={getQuote} id="submit-btn" style={{ background: 'none' }} type="submit">
+          <img src={airplain} alt="stars" style={{ width: '50%' }} />
+        </button>
       </form>
     </Modal>
   );

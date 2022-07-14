@@ -48,9 +48,9 @@ const Login = () => {
           />
         </div>
         <div className="form-group">
-          <button type="submit">Log in</button>
+          <button type="submit">Login</button>
         </div>
-        <p>
+        <p className='text-signup'>
           <Link to={'/auth/signup'}>Create new account?</Link>
         </p>
       </form>
