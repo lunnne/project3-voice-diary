@@ -3,16 +3,12 @@ if (process.env.NODE_ENV !== 'production') { require('dotenv').config() }
 
 const express = require("express");
 const mongoose = require('mongoose');
-const multer = require('multer');
 const { createModel } = require('mongoose-gridfs');
-
-
 
 let Attachment;
 const app = express();
 
 const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost/server";
-console.log(MONGO_URI);
 
 mongoose
   .connect(MONGO_URI)

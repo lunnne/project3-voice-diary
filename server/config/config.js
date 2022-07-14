@@ -1,4 +1,3 @@
-
 if (process.env.NODE_ENV !== 'production') { require('dotenv').config() }
 
 
@@ -11,8 +10,6 @@ const config = {
     saltRounds: process.env.BCRYPT_SALT_ROUNDS,
   },
 }
-
-
 
 
 module.exports = config;
