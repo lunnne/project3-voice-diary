@@ -18,7 +18,7 @@ function TypeWriter({ text }) {
         clearTimeout(timeoutId)
     }
   }, [currentText, text]);
-  return <p>{currentText}</p>;
+  return <p>{currentText}</p>; 
 }
 
 export default TypeWriter;

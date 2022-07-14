@@ -1,33 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Quantico:ital,wght@1,700&display=swap');
+
+
 #fc-dom-2 {
     font-size: 2.5rem;
   }
   
-  .fc .fc-toolbar.fc-header-toolbar {
-    margin-bottom: 2rem;
-  }
-  
-  .fc .fc-header-toolbar button {
-    /* background: none; */
-    background-color: #f2f1ed;
-    border-style: none;
-    color:#343433 ;
-    font-weight: 700;
-  }
-  
-  .fc .fc-header-toolbar button:hover {
-    /* border-style: none; */
-    background-color: #f2f1ed;
-    transform: translateX();
-    transform: translateY();
-    color: #c07777;
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 3rem;
+}
+
+.fc .fc-header-toolbar button {
+  background-color: #f2f1ed;
+  border-style: none;
+  color: #343433 ;
+}
+
+.fc .fc-header-toolbar button:hover {
+  background-color: #f2f1ed;
+  transform: translateX();
+  transform: translateY();
+  color: #343433;
+}
+
+.main-calendar {
+  padding: 1rem 5rem;
+}
+
+.MuiTouchRipple-root {
+    background: none;
     
-  }
-
-  .main-calendar {
-    padding: 1rem 5rem;
-  }
-
- .MuiTouchRipple-root {
-     background: none;
-     
-  }
+}

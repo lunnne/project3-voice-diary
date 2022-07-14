@@ -6,9 +6,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AddRecording from '../recording/AddRecording';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import './Calendar.css';
-import axios from 'axios';
+import { diaryService } from '../../services/diary.service';
 import ShowRecording from '../recording/ShowRecording';
 
 const Calendar = (props) => {
@@ -21,9 +20,10 @@ const Calendar = (props) => {
   const [uploadTime, setUploadTime] = useState('');
   const [id, setId] = useState('');
   const [url, setUrl] = useState('');
-  const navigate = useNavigate();
+
   let calendar_list = [];
 
+  // when you click one event --> get one record 
   const openModal = (id) => {
     let daily_record = calendar_list.filter((record) => {
       if (record.id == id) {
@@ -36,46 +36,34 @@ const Calendar = (props) => {
     let uploadHour = uploadTime.split(':')[0];
     let uploadMinute = uploadTime.split(':')[1];
 
-    axios({
-      url: `http://localhost:5005/api/mydiary/${id}`, //your url
-      method: 'GET',
-      responseType: 'blob', // important
-    })
+    diaryService
+      .getOneRecording(id)
       .then((response) => {
         let url = window.URL.createObjectURL(new Blob([response.data]));
         setUrl(url);
       })
       .catch((err) => console.log(err));
 
-    // let day = "AM"
-    // if (hour >= 12){
-    //   day = "PM"
-    // }
-    // if(hour > 12){
-    //   hour = (hour-12)
-    // }
     setTitle(daily_record[0].title);
     setDate(daily_record[0].date);
     setUploadDate(uploadDate);
     setUploadTime(uploadHour + ':' + uploadMinute);
     setId(id);
-    // setDay(day)
     setEventmodalOpen(true);
   };
-  
+
+  //show all the recordings 
   useEffect(() => {
-    axios
-    .get('http://localhost:5005/api/mydiary')
-    .then((response) => {
-      const recordings = response.data;
-      setListOfRecordings(recordings);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    diaryService
+      .getAllRecordings()
+      .then((response) => {
+        const recordings = response.data;
+        setListOfRecordings(recordings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
-  
-  
 
   calendar_list = listOfRecordings.map((data) => {
     let title = data.filename.split('|')[0];
@@ -87,7 +75,7 @@ const Calendar = (props) => {
 
   return (
     <section className="main-calendar">
-      <div className="full-calendar">
+      <div id="full-calendar">
         <FullCalendar
           plugins={[dayGridPlugin, listPlugin]}
           headerToolbar={{
@@ -97,7 +85,7 @@ const Calendar = (props) => {
           }}
           initialView="dayGridMonth"
           events={calendar_list}
-          eventColor="#E1C0FF"
+          eventColor="#DDBED0"
           eventClick={(info) => {
             openModal(info.event.id);
           }}
@@ -147,6 +135,8 @@ const AddBtn = styled.div`
 `;
 
 const Word = styled.span`
+  font-family: 'Karla';
+  font-weight: 600;
   color: black;
 `;
 

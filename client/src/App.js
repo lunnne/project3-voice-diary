@@ -4,13 +4,10 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/nav/Navbar';
 import Calendar from './components/calendar/Calendar';
 import AddRecording from './components/recording/AddRecording';
-import Home from './components/Home';
+import Home from './components/home/Home';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup'
 import AuthService from "./services/auth.service";
-
-
-
 
 function App() {
   
