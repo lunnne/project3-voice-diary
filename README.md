@@ -1,4 +1,4 @@
-# Seller Moon App
+# Voice Diary App
 <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/> <img src="https://img.shields.io/badge/nodedotjs-339933?style=flat&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/Mongoose-880000?style=flat&logo=Mongoose&logoColor=white"/>
 <img src="https://img.shields.io/badge/Mongodb-47A248?style=flat&logo=Mongodb&logoColor=white"/>
 <img src="https://img.shields.io/badge/express-000000?style=flat&logo=express&logoColor=white"/>
