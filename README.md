@@ -49,4 +49,5 @@ The following features are planned for future development:
 ## Deploy
 <p>
   <img width="100px"src="https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=Netlify&logoColor=white"/>
+  <img width="100px" src="https://img.shields.io/badge/heroku-430098?style=flat&logo=heroku&logoColor=white"/>  
 </p>
